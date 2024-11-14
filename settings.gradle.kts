@@ -10,7 +10,7 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
-            from("io.github.alexritian:catalog:0.0.3-SNAPSHOT")
+            from("io.github.alexritian:catalog:0.0.6-SNAPSHOT")
         }
     }
 }
