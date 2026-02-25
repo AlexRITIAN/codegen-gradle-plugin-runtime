@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "io.github.alexritian"
-version = "0.0.1-SNAPSHOT"
+version = "1.0.1"
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -43,20 +43,7 @@ tasks.named<Test>("test") {
     useJUnitPlatform()
 }
 
-publishing {
-    repositories {
-        maven {
-            name = "githubPackages"
-            url = uri("https://maven.pkg.github.com/AlexRITIAN/codegen-gradle-plugin-runtime")
-            credentials(PasswordCredentials::class)
-        }
-    }
-}
-
 mavenPublishing {
-    configure(JavaLibrary(
-        javadocJar = JavadocJar.Javadoc()
-    ))
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
 
     signAllPublications()
@@ -65,7 +52,7 @@ mavenPublishing {
     pom {
         name.set("${project.group}:${project.name}")
         description.set("This project provides runtime support libraries required by Codegen-gradle-plugin")
-        url.set("https://github.com/AlexRITIAN/codegen-gradle-plugin-runtime")
+        url.set("https://github.com/AlexRITIAN/codegn-gradle-plugin-runtime")
 
         licenses {
             license {
@@ -83,41 +70,10 @@ mavenPublishing {
         }
 
         scm {
-            url.set("https://github.com/AlexRITIAN/codegen-gradle-plugin-runtime")
-            connection.set("scm:git:git://github.com/AlexRITIAN/codegen-gradle-plugin-runtime")
-            developerConnection.set("scm:git:ssh://git@github.com:AlexRITIAN/codegen-gradle-plugin-runtime.git")
+            url.set("https://github.com/AlexRITIAN/codegn-gradle-plugin-runtime")
+            connection.set("scm:git:git://github.com/AlexRITIAN/codegn-gradle-plugin-runtime")
+            developerConnection.set("scm:git:ssh://git@github.com:AlexRITIAN/codegn-gradle-plugin-runtime.git")
         }
     }
-}
 
-val generatePomProperties by tasks.registering {
-    val outputDir = layout.buildDirectory.dir("generated/pomProperties")
-    outputs.dir(outputDir)
-
-    doLast {
-        val props = Properties().apply {
-            setProperty("groupId", project.group.toString())
-            setProperty("artifactId", project.name)
-            setProperty("version", project.version.toString())
-        }
-
-        val outputFile = outputDir.get().file("pom.properties").asFile
-        outputDir.get().asFile.mkdirs()
-        outputFile.writer().use { writer ->
-            props.store(writer, null)
-        }
-    }
-}
-
-tasks.named<Jar>("jar") {
-    dependsOn("generatePomFileForMavenPublication")
-
-    from(layout.buildDirectory.file("publications/pluginMaven/pom-default.xml")) {
-        into("META-INF/${project.group}")
-        rename { "pom.xml" }
-    }
-
-    from(generatePomProperties.map { layout.buildDirectory.dir("generated/pomProperties") }) {
-        into("META-INF/${project.group}")
-    }
 }
