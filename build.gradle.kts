@@ -1,10 +1,3 @@
-import com.vanniktech.maven.publish.JavaLibrary
-import com.vanniktech.maven.publish.JavadocJar
-import com.vanniktech.maven.publish.SonatypeHost
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.util.*
-
 plugins {
     `java-library`
     signing
@@ -12,7 +5,7 @@ plugins {
 }
 
 group = "io.github.alexritian"
-version = "1.0.1"
+version = "1.0.4"
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -34,7 +27,7 @@ dependencies {
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
@@ -44,7 +37,7 @@ tasks.named<Test>("test") {
 }
 
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    publishToMavenCentral()
 
     signAllPublications()
 
@@ -76,4 +69,9 @@ mavenPublishing {
         }
     }
 
+}
+
+signing {
+    useGpgCmd()
+    sign(publishing.publications)
 }
