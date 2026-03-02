@@ -1,15 +1,20 @@
 package io.github.alexritian.codegen.converter;
 
+import org.jetbrains.annotations.Nullable;
 import org.jooq.Converter;
+import org.jooq.impl.AbstractConverter;
 
-import javax.annotation.Nullable;
 import java.sql.Timestamp;
 import java.time.Instant;
 
 /**
  * @author Too_young
  */
-public class TimestampInstantConverter implements Converter<Timestamp, Instant> {
+public class TimestampInstantConverter extends AbstractConverter<Timestamp, Instant> {
+
+    public TimestampInstantConverter(Class<Timestamp> fromType, Class<Instant> toType) {
+        super(fromType, toType);
+    }
 
     @Override
     @Nullable
@@ -29,13 +34,4 @@ public class TimestampInstantConverter implements Converter<Timestamp, Instant> 
         return Timestamp.from(instant);
     }
 
-    @Override
-    public Class<Timestamp> fromType() {
-        return Timestamp.class;
-    }
-
-    @Override
-    public Class<Instant> toType() {
-        return Instant.class;
-    }
 }
