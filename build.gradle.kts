@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.compileOnly
+
 plugins {
     `java-library`
     signing
@@ -5,7 +7,7 @@ plugins {
 }
 
 group = "io.github.alexritian"
-version = "1.0.4"
+version = "1.0.8"
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -17,6 +19,7 @@ dependencies {
     api(libs.bundles.jooq.all)
 
     implementation(libs.jetbrains.annotations)
+    compileOnly(libs.jackson.databind)
 
     // Use JUnit Jupiter for testing.
     testImplementation(libs.junit.jupiter)
